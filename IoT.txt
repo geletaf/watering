@@ -1,0 +1,42 @@
+int relay_level=800;
+int tank_level = 700;
+const int Relay1 = 7;
+const int Relay2 = 6;
+
+void setup() {
+
+pinMode(Relay1, OUTPUT);// initialize the digital pin as an output.
+pinMode(Relay2, OUTPUT);// initialize the digital pin as an output.
+}
+void loop() {
+
+int sensorValue = analogRead(A1);// read the input on analog pin 0:
+
+sensorValue = constrain(sensorValue, 485, 1023);// print out the value you read:
+
+int reservoirValue = analogRead(A2);// read the input on analog pin 2:
+reservoirValue = constrain(reservoirValue, 485, 1023);// print out the value you read: 
+
+delay(1000);
+
+if (sensorValue < relay_level) {
+
+digitalWrite(Relay1, HIGH);// turn the Relay on (HIGH is the voltage level
+delay(1000);// wait for a sec
+}
+else {
+digitalWrite(Relay1, LOW);// turn the LED off by making the voltage LOW
+
+delay(1000);
+}
+if (reservoirValue < tank_level) {
+digitalWrite(Relay2, HIGH);// turn the Relay on HIGH is the voltage level
+Particle.publish("watering", "water low"); // indicate when reservoir is low
+delay(3000);// wait for a sec 
+}
+else {
+ digitalWrite(Relay2, LOW);// turn the LED off by making the voltage LOW
+delay(1000);
+}
+
+}
